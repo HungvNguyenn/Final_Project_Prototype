@@ -46,6 +46,9 @@ public class SearchUI extends Application {
 
     public void BookInfo(Stage primaryStage) {
         VBox layout = new VBox(10);
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> createLayout(primaryStage));
+        layout.getChildren().add(backButton);
         String title = titleTextField.getText();
         Book book = bookManager.searchBooks(title);
         if (book == null) {
@@ -68,6 +71,7 @@ public class SearchUI extends Application {
             readButton = new Button("Read");
             checkOutButton = new Button("Check Out");
             readButton.setOnAction(e -> openBook(title));
+            checkOutButton.setOnAction(e -> checkOutBook(title));
             if (book.isEbook()) {
                 layout.getChildren().addAll(info, readButton);
             } else {
@@ -100,6 +104,19 @@ public class SearchUI extends Application {
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    public void checkOutBook(String title) {
+        VBox layout = new VBox(10);
+        Label checkedOut = new Label("Book checked out.");
+        Button readButton = new Button("Read");
+        readButton.setOnAction(e -> openBook(title));
+        layout.getChildren().addAll(checkedOut, readButton);
+        Scene scene = new Scene(layout, 500, 350);
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @Override
