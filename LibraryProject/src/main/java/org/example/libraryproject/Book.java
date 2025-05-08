@@ -38,7 +38,7 @@ public class Book {
     }
 
     public String getBookFile() {
-        return "bookFiles/"+bookFilename;
+        return bookFilename;
     }
 }
 

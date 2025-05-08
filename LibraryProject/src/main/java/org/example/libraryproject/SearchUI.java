@@ -84,7 +84,7 @@ public class SearchUI extends Application {
     // open readable file
     public void openBook(String title) {
         Book book = bookManager.searchBooks(title);
-        File file = new File(book.getBookFile());
+        File file = new File("bookFiles/"+book.getBookFile());
         TextArea textArea = new TextArea();
         textArea.setEditable(false);
         try {
