@@ -1,5 +1,6 @@
 # Final_Project_Prototype
 ## Project Title
+ReadNest
 
 ## Team Members
 Joseph Scott and Hung Nguyen
@@ -31,3 +32,16 @@ If the book is a physical book, there is a "Check Out" button that is meant to s
 * Button to simulate checking out a book before reading
 * Back button to return to search bar
 * Working database that can be updated from the program (BookManager.java)
+
+## Future Work
+* Login feature
+* Viewing books that have been checked out
+* Return books
+* Viewing available books without searching
+
+## Known Issues
+* Limited database size
+* Books not listed for user
+
+## Screenshots
+
