@@ -4,13 +4,10 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,7 +76,7 @@ public class SearchUI extends Application {
             }
 
             primaryStage.setTitle(title);
-            Scene scene = new Scene(layout, 500, 350);
+            Scene scene = new Scene(layout, 1000, 1500);
             primaryStage.setScene(scene);
         }
         primaryStage.show();
@@ -119,9 +116,56 @@ public class SearchUI extends Application {
         stage.show();
     }
 
+    public void loginScene(Stage stage) {
+        VBox layout = new VBox(15);
+        layout.setPadding(new javafx.geometry.Insets(20));
+        layout.setStyle("-fx-background-color: white;");
+        layout.setAlignment(javafx.geometry.Pos.CENTER);
+
+        Label loginTitle = new Label("ReadNest");
+        loginTitle.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #333;");
+
+        //username
+        Label usernameLabel = new Label("Username: ");
+        usernameLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        TextField usernameTextField = new TextField();
+        usernameTextField.setPromptText("Enter Username");
+
+
+        //password
+        Label passwordLabel = new Label("Password: ");
+        passwordLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        PasswordField passwordTextField = new PasswordField();
+        passwordTextField.setPromptText("Enter Password");
+
+
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-background-color: #FF0033; -fx-font-weight: bold;");
+
+        Button loginButton = new Button("Login");
+        loginButton.setOnAction(e ->{
+            String username = usernameTextField.getText();
+            String password = passwordTextField.getText();
+            if (username.equals("admin") && password.equals("password")) {
+                createLayout(stage);
+            } else {
+                errorLabel.setText("Invalid Username or Password.");
+            }
+        });
+
+        layout.getChildren().addAll(loginTitle,usernameLabel, usernameTextField, passwordLabel, passwordTextField, loginButton, errorLabel);
+        Scene scene = new Scene(layout, 500, 350);
+        stage.setScene(scene);
+        stage.setTitle("Library Login");
+        stage.show();
+
+
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        createLayout(stage);
+        //stage.setMaximized(true);  //fullscreen but it look weird rn
+        loginScene(stage);
     }
 
     public static void main(String[] args) {
