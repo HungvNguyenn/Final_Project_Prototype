@@ -50,7 +50,18 @@ If the book is a physical book, there is a "Check Out" button that is meant to s
 * Register not set up yet
 
 ## Screenshots
-
+Login Window: <br><br>
+![Loghin Window](https://github.com/user-attachments/assets/676669f7-35ee-4792-86c8-dde831be4b74) <br><br>
+Register Window: <br><br>
+![Register Window](https://github.com/user-attachments/assets/4764b0b6-c080-4c8f-9421-71e110ccf729) <br><br>
+Search Bar: <br><br>
+![Search Bar](https://github.com/user-attachments/assets/1b1bd272-dc8a-449b-8f3f-799f49d914cc)<br><br>
+Book Info: <br><br>
+![Book Info](https://github.com/user-attachments/assets/1775f544-ab67-4f82-962a-ea7becd2f228)<br><br>
+Book Content: <br><br>
+![Book Content](https://github.com/user-attachments/assets/f138eac0-6398-4498-8147-634509a7f443)<br><br>
+Checked Out: <br><br>
+![Checked Out](https://github.com/user-attachments/assets/23e58d99-37ae-4086-9453-7557557b7227)<br><br>
 
 ## Video Link
 [ReadNest Demo](https://drive.google.com/file/d/1HifOhbD4VNErRJWTX9nLWCkmZcG9tcwG/view?usp=sharing)
