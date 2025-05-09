@@ -46,6 +46,8 @@ If the book is a physical book, there is a "Check Out" button that is meant to s
 ## Known Issues
 * Limited database size
 * Books not listed for user
+* User login not storing in database
+* Register not set up yet
 
 ## Screenshots
 
