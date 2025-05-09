@@ -17,7 +17,7 @@ If the book is a physical book, there is a "Check Out" button that is meant to s
 3. When Main.java runs, a JavaFX window will pop up asking the user to log in or register an account
 4. When clicking on the registration button it will pop up a new scene for the user to enter their username and password and then register (currently unavailable) using the register button or back to go back to log in menu
 5. The user can log in by entering their username and password and then clicking the login button (there is currently only the admin login **username:** admin and **password:** password)
-4. Currently, there are not many books in our database so the user has to already know what movies exist before searching for a book. The user must also type in the name of the book exactly, or the program will say "Book not found".
+4. Currently, there are not many books in our database so the user has to know already what books exist before searching for a book. The user must also type in the name of the book exactly, or the program will say "Book not found".
 5. After searching for an existing book, the user will see a new window displaying a "Back" button, the books information, and either a "Read" button or a "Check Out" button.
 6. Pressing the back button reopens the window with the search bar.
 7. If the book is listed as an eBook, the button will say "Read". If the book is listed as a physical book, the button will say "Check Out".
