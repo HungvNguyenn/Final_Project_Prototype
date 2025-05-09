@@ -39,3 +39,8 @@ If the book is a physical book, there is a "Check Out" button that is meant to s
 * Viewing available books without searching
 
 ## Known Issues
+* Limited database size
+* Books not listed for user
+
+## Screenshots
+
