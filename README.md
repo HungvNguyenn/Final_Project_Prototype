@@ -51,3 +51,6 @@ If the book is a physical book, there is a "Check Out" button that is meant to s
 
 ## Screenshots
 
+
+## Video Link
+[ReadNest Demo](https://drive.google.com/file/d/1HifOhbD4VNErRJWTX9nLWCkmZcG9tcwG/view?usp=sharing)
