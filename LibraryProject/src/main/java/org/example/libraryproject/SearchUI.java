@@ -3,8 +3,10 @@ package org.example.libraryproject;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -122,7 +124,7 @@ public class SearchUI extends Application {
         layout.setStyle("-fx-background-color: white;");
         layout.setAlignment(javafx.geometry.Pos.CENTER);
 
-        Label loginTitle = new Label("ReadNest");
+        Label loginTitle = new Label("\uD83D\uDCDA ReadNest \uD83C\uDFE1");
         loginTitle.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
         //username
@@ -130,6 +132,8 @@ public class SearchUI extends Application {
         usernameLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
         TextField usernameTextField = new TextField();
         usernameTextField.setPromptText("Enter Username");
+        usernameTextField.setPrefWidth(300);
+        HBox usernameRow = new HBox(10,usernameLabel,usernameTextField);
 
 
         //password
@@ -137,12 +141,16 @@ public class SearchUI extends Application {
         passwordLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
         PasswordField passwordTextField = new PasswordField();
         passwordTextField.setPromptText("Enter Password");
+        passwordTextField.setPrefWidth(300);
+        HBox passwordRow = new HBox(10,passwordLabel,passwordTextField);
 
 
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-background-color: #FF0033; -fx-font-weight: bold;");
 
+        //login button
         Button loginButton = new Button("Login");
+        loginButton.setStyle("-fx-background-color: #ADD8E6;");
         loginButton.setOnAction(e ->{
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
@@ -153,18 +161,76 @@ public class SearchUI extends Application {
             }
         });
 
-        layout.getChildren().addAll(loginTitle,usernameLabel, usernameTextField, passwordLabel, passwordTextField, loginButton, errorLabel);
+        //register button
+        Button registerButton = new Button("Register");
+        registerButton.setOnAction(e -> registerScene(stage));
+
+        HBox buttonRow = new HBox(10,registerButton,loginButton);
+
+        layout.getChildren().addAll(loginTitle,usernameRow, passwordRow, buttonRow, errorLabel);
         Scene scene = new Scene(layout, 500, 350);
         stage.setScene(scene);
         stage.setTitle("Library Login");
         stage.show();
+    }
 
+    public void registerScene(Stage stage) {
+        VBox layout = new VBox(20);
+        layout.setPadding(new Insets(30));
+        layout.setStyle("-fx-background-color: white;");
+
+        //title
+        Label registerTitle = new Label("\uD83D\uDCDA Register New ReadNest Account");
+        registerTitle.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #333;");
+
+        //username section
+        Label usernameLabel = new Label("Username: ");
+        usernameLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        TextField usernameTextField = new TextField();
+        usernameTextField.setPromptText("Enter Username");
+        HBox userNameRow = new HBox(10, usernameLabel, usernameTextField);
+
+
+        //password section
+        Label passwordLabel = new Label("Password: ");
+        passwordLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        PasswordField passwordTextField = new PasswordField();
+        passwordTextField.setPromptText("Enter Password");
+        HBox passwordRow = new HBox(10, passwordLabel, passwordTextField);
+
+        //confirm password section
+        Label confirmPass = new Label("Confirm Password: ");
+        confirmPass.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        PasswordField confirmPassTextField = new PasswordField();
+        confirmPassTextField.setPromptText("Re-enter Password to confirm");
+        HBox confirmPassRow = new HBox(10, confirmPass, confirmPassTextField);
+
+        //register button
+        Label messageLabel = new Label();
+        Button registerButton = new Button("Register");
+        registerButton.setStyle("-fx-background-color:#ADD8E6;");
+        registerButton.setOnAction(e -> {
+            messageLabel.setText("Registration currently unavailable.");
+            messageLabel.setStyle("-fx-background-color: #FF0033; -fx-font-weight: bold;");
+        });
+
+        //back to login page button
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> loginScene(stage));
+
+        HBox buttonRow = new HBox(10,backButton,registerButton);
+
+        layout.getChildren().addAll(registerTitle, userNameRow, passwordRow, confirmPassRow, buttonRow, messageLabel);
+        Scene scene = new Scene(layout, 500, 350);
+        stage.setScene(scene);
+        stage.setTitle("Register New Account");
+        stage.show();
 
     }
 
+
     @Override
     public void start(Stage stage) throws Exception {
-        //stage.setMaximized(true);  //fullscreen but it look weird rn
         loginScene(stage);
     }
 
