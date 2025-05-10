@@ -1,6 +1,8 @@
 package org.example.libraryproject;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookDAO {
 
@@ -59,5 +61,31 @@ public class BookDAO {
 
         return null; // book not found
     }
+
+    public List<Book> getAllBooks() {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM book";
+
+        try (Connection conn = DBUtil.getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                books.add(new Book(
+                        rs.getString("title"),
+                        rs.getInt("pages"),
+                        rs.getString("description"),
+                        rs.getBoolean("is_ebook"),
+                        rs.getString("filename")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return books;
+    }
+
+
 }
 

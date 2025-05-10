@@ -2,6 +2,7 @@ package org.example.libraryproject;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.List;
 import java.util.Scanner;
 
 public class BookManager {
@@ -15,6 +16,10 @@ public class BookManager {
     // Add a new book
     public void addBook(Book book) throws ClassNotFoundException {
         dao.insertBook(book);
+    }
+
+    public List<Book> getAllBooks() {
+        return dao.getAllBooks();
     }
 
     public static void main(String[] args) {

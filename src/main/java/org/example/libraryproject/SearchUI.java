@@ -5,12 +5,15 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchUI extends Application {
 
@@ -22,28 +25,61 @@ public class SearchUI extends Application {
     private Button readButton;
 
 
-    public void createLayout(Stage primaryStage) {
+    public void searchScene(Stage stage) {
+        //setting layout
         VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+        layout.setAlignment(javafx.geometry.Pos.CENTER);
+
         BookManager manager = new BookManager();
+
         messageLabel = new Label("Enter a book title:");
+        messageLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
         titleTextField = new TextField();
+        titleTextField.setPromptText("search book title");
+        titleTextField.setPrefSize(500, 10);
+
         searchButton = new Button("Search");
-        searchButton.setOnAction(e -> BookInfo(primaryStage));
+        searchButton.setPrefSize(200,25);
+        searchButton.setOnAction(e -> BookInfo(stage));
+
+        //title label
+        Label titleLabel = new Label("\uD83D\uDCDASearch Books");
+        titleLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #333;");
+
+        HBox searchRow = new HBox(10, messageLabel, titleTextField);
+        searchRow.setAlignment(javafx.geometry.Pos.CENTER);
+
         // book manager contains stored books
         bookManager = manager;
+
+        //list all books
+        ListView<String> bookList = new ListView<>();
+        bookList.setPrefHeight(250);
+
+        //show all book title
+        List<Book> allBooks = manager.getAllBooks();
+        for(Book book : allBooks) {
+            String displayText = book.getBookTitle() + " - " + (book.isEbook() ? "Ebook" : "Phyiscal Book");
+            bookList.getItems().add(displayText);
+        }
+
+
         // window title
-        primaryStage.setTitle("Search Books");
-        layout.getChildren().addAll(messageLabel, titleTextField, searchButton);
+        stage.setTitle("Search Books");
+        layout.getChildren().addAll(titleLabel,searchRow, searchButton, bookList);
         Scene scene = new Scene(layout, 500, 350);
-        primaryStage.setScene(scene);
+        stage.setScene(scene);
         // show stage
-        primaryStage.show();
+        stage.setFullScreen(true);
+        stage.show();
+
     }
 
-    public void BookInfo(Stage primaryStage) {
+    public void BookInfo(Stage stage) {
         VBox layout = new VBox(10);
         Button backButton = new Button("Back");
-        backButton.setOnAction(e -> createLayout(primaryStage));
+        backButton.setOnAction(e -> searchScene(stage));
         layout.getChildren().add(backButton);
         String title = titleTextField.getText();
         Book book = bookManager.searchBooks(title);
@@ -51,7 +87,7 @@ public class SearchUI extends Application {
             Label notFound = new Label("Book not found.");
             layout.getChildren().add(notFound);
             Scene scene = new Scene(layout, 500, 350);
-            primaryStage.setScene(scene);
+            stage.setScene(scene);
             return;
         } else {
             String bookType;
@@ -74,11 +110,13 @@ public class SearchUI extends Application {
                 layout.getChildren().addAll(info, checkOutButton);
             }
 
-            primaryStage.setTitle(title);
+            stage.setTitle(title);
             Scene scene = new Scene(layout, 500, 350);
-            primaryStage.setScene(scene);
+            stage.setScene(scene);
         }
-        primaryStage.show();
+        //fullscreen and show stage
+        //stage.setFullScreen(true);
+        stage.show();
     }
 
     // open readable file
@@ -98,6 +136,7 @@ public class SearchUI extends Application {
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
 
     }
@@ -106,53 +145,61 @@ public class SearchUI extends Application {
         VBox layout = new VBox(10);
         Label checkedOut = new Label("Book checked out.");
         Button readButton = new Button("Read");
+
         readButton.setOnAction(e -> openBook(title));
         layout.getChildren().addAll(checkedOut, readButton);
+
+
         Scene scene = new Scene(layout, 500, 350);
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 
     public void loginScene(Stage stage) {
         VBox layout = new VBox(15);
-        layout.setPadding(new javafx.geometry.Insets(20));
-        layout.setStyle("-fx-background-color: white;");
+        layout.setPadding(new javafx.geometry.Insets(50));
+        layout.setStyle("-fx-background-color: #FAF9F6;");
         layout.setAlignment(javafx.geometry.Pos.CENTER);
 
         Label loginTitle = new Label("\uD83D\uDCDA ReadNest \uD83C\uDFE1");
-        loginTitle.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        loginTitle.setStyle("-fx-font-size: 100px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
         //username
         Label usernameLabel = new Label("Username: ");
-        usernameLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        usernameLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;-fx-text-fill: #333;");
         TextField usernameTextField = new TextField();
         usernameTextField.setPromptText("Enter Username");
-        usernameTextField.setPrefWidth(300);
+        usernameTextField.setPrefSize(700, 50);
+        usernameTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
         HBox usernameRow = new HBox(10,usernameLabel,usernameTextField);
-
+        usernameRow.setAlignment(javafx.geometry.Pos.CENTER);
 
         //password
         Label passwordLabel = new Label("Password: ");
-        passwordLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        passwordLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;-fx-text-fill: #333");
         PasswordField passwordTextField = new PasswordField();
         passwordTextField.setPromptText("Enter Password");
-        passwordTextField.setPrefWidth(300);
+        passwordTextField.setPrefSize(700, 50);
+        passwordTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
         HBox passwordRow = new HBox(10,passwordLabel,passwordTextField);
+        passwordRow.setAlignment(javafx.geometry.Pos.CENTER);
 
 
         Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-background-color: #FF0033; -fx-font-weight: bold;");
+        errorLabel.setStyle("-fx-font-size: 25px;-fx-background-color: #FF0033; -fx-font-weight: bold;");
 
         //login button
         Button loginButton = new Button("Login");
-        loginButton.setStyle("-fx-background-color: #ADD8E6;");
+        loginButton.setPrefSize(200,50);
+        loginButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-background-color: #ADD8E6");
         loginButton.setOnAction(e ->{
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
             if (username.equals("admin") && password.equals("password")) {
-                createLayout(stage);
+                searchScene(stage);
             } else {
                 errorLabel.setText("Invalid Username or Password.");
             }
@@ -161,66 +208,106 @@ public class SearchUI extends Application {
         //register button
         Button registerButton = new Button("Register");
         registerButton.setOnAction(e -> registerScene(stage));
+        registerButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+        registerButton.setPrefSize(200,50);
 
         HBox buttonRow = new HBox(10,registerButton,loginButton);
+        buttonRow.setAlignment(javafx.geometry.Pos.CENTER);
+
 
         layout.getChildren().addAll(loginTitle,usernameRow, passwordRow, buttonRow, errorLabel);
-        Scene scene = new Scene(layout, 500, 350);
+        Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.setTitle("Library Login");
+
+        stage.setFullScreen(true);
         stage.show();
     }
 
     public void registerScene(Stage stage) {
-        VBox layout = new VBox(20);
-        layout.setPadding(new Insets(30));
-        layout.setStyle("-fx-background-color: white;");
+        VBox layout = new VBox(25);
+        layout.setPadding(new Insets(35));
+        layout.setStyle("-fx-background-color: #FAF9F6;");
+        layout.setAlignment(javafx.geometry.Pos.CENTER);
 
         //title
         Label registerTitle = new Label("\uD83D\uDCDA Register New ReadNest Account");
-        registerTitle.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        registerTitle.setStyle("-fx-font-size: 75px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
         //username section
+
+        //username label
         Label usernameLabel = new Label("Username: ");
         usernameLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        //username Text field
         TextField usernameTextField = new TextField();
         usernameTextField.setPromptText("Enter Username");
+        usernameTextField.setPrefSize(700, 50);
+        usernameTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        //grouping label and text field
         HBox userNameRow = new HBox(10, usernameLabel, usernameTextField);
+        userNameRow.setPrefSize(700, 50);
+        userNameRow.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        userNameRow.setAlignment(javafx.geometry.Pos.CENTER);
 
 
         //password section
-        Label passwordLabel = new Label("Password: ");
+
+        //user name label
+        Label passwordLabel = new Label("Enter Password: ");
         passwordLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        //password text field
         PasswordField passwordTextField = new PasswordField();
         passwordTextField.setPromptText("Enter Password");
+        passwordTextField.setPrefSize(700, 50);
+        passwordTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        //grouping label and text field
         HBox passwordRow = new HBox(10, passwordLabel, passwordTextField);
+        passwordRow.setPrefSize(700, 50);
+        passwordRow.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        passwordRow.setAlignment(javafx.geometry.Pos.CENTER);
 
         //confirm password section
+
+        //confirmation label
         Label confirmPass = new Label("Confirm Password: ");
         confirmPass.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
+        //confirmation text field
         PasswordField confirmPassTextField = new PasswordField();
         confirmPassTextField.setPromptText("Re-enter Password to confirm");
+        confirmPassTextField.setPrefSize(700, 50);
+        confirmPassTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        //grouping label and text field
         HBox confirmPassRow = new HBox(10, confirmPass, confirmPassTextField);
+        confirmPassRow.setPrefSize(700, 50);
+        confirmPassRow.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        confirmPassRow.setAlignment(javafx.geometry.Pos.CENTER);
 
         //register button
         Label messageLabel = new Label();
         Button registerButton = new Button("Register");
-        registerButton.setStyle("-fx-background-color:#ADD8E6;");
+        registerButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-background-color: #ADD8E6");
+        registerButton.setPrefSize(200,50);
         registerButton.setOnAction(e -> {
             messageLabel.setText("Registration currently unavailable.");
-            messageLabel.setStyle("-fx-background-color: #FF0033; -fx-font-weight: bold;");
+            messageLabel.setStyle("-fx-font-size: 25px;-fx-background-color: #FF0033; -fx-font-weight: bold;");
         });
 
         //back to login page button
         Button backButton = new Button("Back");
+        backButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+        backButton.setPrefSize(200,50);
         backButton.setOnAction(e -> loginScene(stage));
 
         HBox buttonRow = new HBox(10,backButton,registerButton);
+        buttonRow.setAlignment(javafx.geometry.Pos.CENTER);
 
         layout.getChildren().addAll(registerTitle, userNameRow, passwordRow, confirmPassRow, buttonRow, messageLabel);
-        Scene scene = new Scene(layout, 500, 350);
+        Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.setTitle("Register New Account");
+
+        stage.setFullScreen(true);
         stage.show();
 
     }
@@ -228,7 +315,8 @@ public class SearchUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-         loginScene(stage);
+        loginScene(stage);
+        registerScene(stage);
     }
 
     public static void main(String[] args) {
