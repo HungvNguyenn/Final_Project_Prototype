@@ -7,12 +7,20 @@ Joseph Scott and Hung Nguyen
 
 ## Project Description
 We have created a program for a simple Library Management System. Users can log in or register an account, then they enter the main menu where they type in the name of a book in the search, and if that book exists in our database the information of the book will be displayed (title, number of pages, description, whether it is an ebook or physical book).<br><br>
-If the book is an eBook, the user can click the "Read" button, which will pull up a text file that is meant to represent waht would be the contents of the book for the user to read.<br><br>
+If the book is an eBook, the user can click the "Read" button, which will pull up a text file that is meant to represent what would be the contents of the book for the user to read.<br><br>
 Currently, the readable files do not contain a full book to read, but contain a single line as a placeholder for each book.<br><br>
 If the book is a physical book, there is a "Check Out" button that is meant to simulate the user checking out a book from a library before reading it.
 
+## How To setup MySQL Workbench Database
+2. create a schema in the localhost name librarymanagementsystem, then on the top left there is a Server tab hover over it and find Data import
+3. select Import from self-Contain File and then find the library_dump.sql, then Default Target Schema select librarymanagementsystem and then start import in the bottom
+4. In intelliJ go to project structure, then module, then dependencies, click on the '+' and find the path to the mysql-connector-j-9.3.0.jar file and select that, click apply and then ok.
+5. in the DBUtil.java file, change the URL ip if it not localhost, the username and password, the image below show the ip address (in our case it is localhost) and the username (in our case root)
+
+![image](https://github.com/user-attachments/assets/4f2adc6b-6397-463d-a117-b2571775e527)
+
 ## How to Run
-1. This project utilizes JavaFX for the front-end. When opening the project folder, this may require a user to set up JavaFX on their end.
+1. This project utilizes JavaFX for the front-end. When opening the project folder, this may require a user to set up JavaFX on their end and setting up mySQL database.
 2. After JavaFX is properly set up, the user must run the file Main.java in order to run the program.
 3. When Main.java runs, a JavaFX window will pop up asking the user to log in or register an account
 4. When clicking on the registration button it will pop up a new scene for the user to enter their username and password and then register (currently unavailable) using the register button or back to go back to log in menu
@@ -26,6 +34,7 @@ If the book is a physical book, there is a "Check Out" button that is meant to s
 10. When the user is done reading the book, they can click on the "X" in the top right corner to close the window and return to the window with the book's information
 11. From there, the user can click the "Read" button to reopen the .txt file, or they can press the "Back" button to return to the search bar.
 12. If the user clicks the "X" in the top right corner to close the window, the program will terminate.
+
 
 ## Features Implemented
 * JavaFX frontend
