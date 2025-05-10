@@ -1,14 +1,11 @@
 package org.example.libraryproject;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -78,7 +75,7 @@ public class SearchUI extends Application {
             }
 
             primaryStage.setTitle(title);
-            Scene scene = new Scene(layout, 1000, 1500);
+            Scene scene = new Scene(layout, 500, 350);
             primaryStage.setScene(scene);
         }
         primaryStage.show();
@@ -231,7 +228,7 @@ public class SearchUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        loginScene(stage);
+         loginScene(stage);
     }
 
     public static void main(String[] args) {
