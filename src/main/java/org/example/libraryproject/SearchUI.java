@@ -30,10 +30,9 @@ public class SearchUI extends Application {
     public void searchScene(Stage stage) {
         BorderPane root = new BorderPane();
 
-
         //Main Layout
         VBox layout = new VBox(20);
-        layout.setAlignment(javafx.geometry.Pos.CENTER);
+        layout.setAlignment(Pos.CENTER);
 
         BookManager manager = new BookManager();
 
@@ -55,7 +54,7 @@ public class SearchUI extends Application {
         searchButton.setOnAction(e -> BookInfo(stage));
 
         HBox searchRow = new HBox(10, messageLabel, titleTextField, searchButton);
-        searchRow.setAlignment(javafx.geometry.Pos.CENTER);
+        searchRow.setAlignment(Pos.CENTER);
 
         // book manager contains stored books
         bookManager = manager;
@@ -74,7 +73,7 @@ public class SearchUI extends Application {
 
         //Top bar for sign out
         HBox topBar = new HBox();
-        topBar.setAlignment(Pos.BASELINE_RIGHT);
+        topBar.setAlignment(Pos.TOP_RIGHT);
         topBar.setPrefSize(150,25);
         topBar.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
         //button for sign out
@@ -103,12 +102,12 @@ public class SearchUI extends Application {
     }
 
     public void BookInfo(Stage stage) {
-        //store the state of fullscreen
-        boolean wasFullScreen = stage.isFullScreen();
-
         VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
 
         Button backButton = new Button("Back");
+        backButton.setPrefSize(150,35);
+        backButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
         backButton.setOnAction(e -> searchScene(stage));
         layout.getChildren().add(backButton);
 
@@ -116,11 +115,11 @@ public class SearchUI extends Application {
         Book book = bookManager.searchBooks(title);
         if (book == null) {
             Label notFound = new Label("Book not found.");
-            layout.getChildren().add(notFound);
+            notFound.setStyle("-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #333;");
+            layout.getChildren().addAll(notFound);
             Scene scene = new Scene(layout, 500, 350);
             stage.setScene(scene);
-            stage.setFullScreen(true
-            );
+            stage.setFullScreen(true);
             return;
         } else {
             String bookType;
@@ -133,10 +132,16 @@ public class SearchUI extends Application {
                     "\nPages: " + book.getNumberOfPages() + "\nDescription: " + book.getDescription() +
                     "\nBook Type: " + bookType);
 
+            info.setStyle("-fx-font-size: 25px;-fx-text-fill: #333;");
+
             readButton = new Button("Read");
+            readButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;-fx-background-color: #ADD8E6;");
+            readButton.setPrefSize(200,35);
             checkOutButton = new Button("Check Out");
-            readButton.setOnAction(e -> openBook(title));
-            checkOutButton.setOnAction(e -> checkOutBook(title));
+            checkOutButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;-fx-background-color: #ADD8E6;");
+            checkOutButton.setPrefSize(200,35);
+            readButton.setOnAction(e -> openBook(title, stage, book.isEbook() ? false : true));
+            checkOutButton.setOnAction(e -> checkOutBook(title, stage));
 
             if (book.isEbook()) {
                 layout.getChildren().addAll(info, readButton);
@@ -146,8 +151,8 @@ public class SearchUI extends Application {
 
             stage.setTitle(title);
             Scene scene = new Scene(layout, 500, 350);
-            stage.setFullScreen(true);
             stage.setScene(scene);
+            stage.setFullScreen(true);
         }
         //fullscreen and show stage
         stage.setFullScreen(true);
@@ -155,7 +160,7 @@ public class SearchUI extends Application {
     }
 
     // open readable file
-    public void openBook(String title) {
+    public void openBook(String title, Stage stage, boolean isPhysicalBook) {
         Book book = bookManager.searchBooks(title);
         File file = new File("bookFiles/"+book.getBookFile());
         TextArea textArea = new TextArea();
@@ -171,7 +176,11 @@ public class SearchUI extends Application {
         //creating a back button
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> {
-            ((Stage) backButton.getScene().getWindow()).close();
+            if (isPhysicalBook) {
+                checkOutBook(title, stage);
+            } else {
+                BookInfo(stage);
+            }
         });
 
         HBox topBar = new HBox(backButton);
@@ -185,7 +194,6 @@ public class SearchUI extends Application {
 
 
         Scene scene = new Scene(layout, 500, 350);
-        Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(scene);
         stage.setFullScreen(true);
@@ -193,17 +201,38 @@ public class SearchUI extends Application {
 
     }
 
-    public void checkOutBook(String title) {
+    public void checkOutBook(String title, Stage stage) {
         VBox layout = new VBox(10);
-        Label checkedOut = new Label("Book checked out.");
-        Button readButton = new Button("Read");
+        layout.setAlignment(Pos.CENTER);
 
-        readButton.setOnAction(e -> openBook(title));
-        layout.getChildren().addAll(checkedOut, readButton);
+        //label
+        Label checkedOut = new Label("Book checked out.");
+        checkedOut.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;-fx-text-fill: #333");
+
+        //return book button
+        Button returnBook = new Button("Return Book");
+        returnBook.setPrefSize(200,50);
+        returnBook.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+        returnBook.setOnAction(e -> {
+           BookInfo(stage);
+        });
+
+
+        //read button book
+        readButton = new Button("Read");
+        readButton.setOnAction(e -> openBook(title, stage, true));
+        readButton.setPrefSize(200,50);
+        readButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-background-color: #ADD8E6");
+
+        HBox buttonRow = new HBox(10);
+        buttonRow.getChildren().addAll(returnBook, readButton);
+        buttonRow.setAlignment(Pos.CENTER);
+
+        layout.getChildren().addAll(checkedOut, buttonRow);
+
 
 
         Scene scene = new Scene(layout, 500, 350);
-        Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(scene);
         stage.setFullScreen(true);
@@ -212,9 +241,9 @@ public class SearchUI extends Application {
 
     public void loginScene(Stage stage) {
         VBox layout = new VBox(15);
-        layout.setPadding(new javafx.geometry.Insets(50));
+        layout.setPadding(new Insets(50));
         layout.setStyle("-fx-background-color: #FAF9F6;");
-        layout.setAlignment(javafx.geometry.Pos.CENTER);
+        layout.setAlignment(Pos.CENTER);
 
         Label loginTitle = new Label("\uD83D\uDCDA ReadNest \uD83C\uDFE1");
         loginTitle.setStyle("-fx-font-size: 100px; -fx-font-weight: bold; -fx-text-fill: #333;");
@@ -227,7 +256,7 @@ public class SearchUI extends Application {
         usernameTextField.setPrefSize(700, 50);
         usernameTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
         HBox usernameRow = new HBox(10,usernameLabel,usernameTextField);
-        usernameRow.setAlignment(javafx.geometry.Pos.CENTER);
+        usernameRow.setAlignment(Pos.CENTER);
 
         //password
         Label passwordLabel = new Label("Password: ");
@@ -237,7 +266,7 @@ public class SearchUI extends Application {
         passwordTextField.setPrefSize(700, 50);
         passwordTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
         HBox passwordRow = new HBox(10,passwordLabel,passwordTextField);
-        passwordRow.setAlignment(javafx.geometry.Pos.CENTER);
+        passwordRow.setAlignment(Pos.CENTER);
 
 
         Label errorLabel = new Label();
@@ -264,7 +293,7 @@ public class SearchUI extends Application {
         registerButton.setPrefSize(200,50);
 
         HBox buttonRow = new HBox(10,registerButton,loginButton);
-        buttonRow.setAlignment(javafx.geometry.Pos.CENTER);
+        buttonRow.setAlignment(Pos.CENTER);
 
 
         layout.getChildren().addAll(loginTitle,usernameRow, passwordRow, buttonRow, errorLabel);
@@ -280,7 +309,7 @@ public class SearchUI extends Application {
         VBox layout = new VBox(25);
         layout.setPadding(new Insets(35));
         layout.setStyle("-fx-background-color: #FAF9F6;");
-        layout.setAlignment(javafx.geometry.Pos.CENTER);
+        layout.setAlignment(Pos.CENTER);
 
         //title
         Label registerTitle = new Label("\uD83D\uDCDA Register New ReadNest Account");
@@ -300,7 +329,7 @@ public class SearchUI extends Application {
         HBox userNameRow = new HBox(10, usernameLabel, usernameTextField);
         userNameRow.setPrefSize(700, 50);
         userNameRow.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
-        userNameRow.setAlignment(javafx.geometry.Pos.CENTER);
+        userNameRow.setAlignment(Pos.CENTER);
 
 
         //password section
@@ -317,7 +346,7 @@ public class SearchUI extends Application {
         HBox passwordRow = new HBox(10, passwordLabel, passwordTextField);
         passwordRow.setPrefSize(700, 50);
         passwordRow.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
-        passwordRow.setAlignment(javafx.geometry.Pos.CENTER);
+        passwordRow.setAlignment(Pos.CENTER);
 
         //confirm password section
 
@@ -333,7 +362,7 @@ public class SearchUI extends Application {
         HBox confirmPassRow = new HBox(10, confirmPass, confirmPassTextField);
         confirmPassRow.setPrefSize(700, 50);
         confirmPassRow.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
-        confirmPassRow.setAlignment(javafx.geometry.Pos.CENTER);
+        confirmPassRow.setAlignment(Pos.CENTER);
 
         //register button
         Label messageLabel = new Label();
@@ -352,7 +381,7 @@ public class SearchUI extends Application {
         backButton.setOnAction(e -> loginScene(stage));
 
         HBox buttonRow = new HBox(10,backButton,registerButton);
-        buttonRow.setAlignment(javafx.geometry.Pos.CENTER);
+        buttonRow.setAlignment(Pos.CENTER);
 
         layout.getChildren().addAll(registerTitle, userNameRow, passwordRow, confirmPassRow, buttonRow, messageLabel);
         Scene scene = new Scene(layout);
@@ -367,8 +396,8 @@ public class SearchUI extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        stage.setFullScreenExitHint("");
         loginScene(stage);
-        searchScene(stage);
     }
 
     public static void main(String[] args) {
