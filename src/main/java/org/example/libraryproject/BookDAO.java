@@ -57,7 +57,6 @@ public class BookDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Book with title '" + title + "' not found in database.");
 
         return null; // book not found
     }

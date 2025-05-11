@@ -2,8 +2,10 @@ package org.example.libraryproject;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -26,28 +28,33 @@ public class SearchUI extends Application {
 
 
     public void searchScene(Stage stage) {
-        //setting layout
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(10));
+        BorderPane root = new BorderPane();
+
+
+        //Main Layout
+        VBox layout = new VBox(20);
         layout.setAlignment(javafx.geometry.Pos.CENTER);
 
         BookManager manager = new BookManager();
 
-        messageLabel = new Label("Enter a book title:");
-        messageLabel.setStyle("-fx-font-weight: bold;-fx-text-fill: #333;");
-        titleTextField = new TextField();
-        titleTextField.setPromptText("search book title");
-        titleTextField.setPrefSize(500, 10);
-
-        searchButton = new Button("Search");
-        searchButton.setPrefSize(200,25);
-        searchButton.setOnAction(e -> BookInfo(stage));
-
         //title label
         Label titleLabel = new Label("\uD83D\uDCDASearch Books");
-        titleLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        titleLabel.setStyle("-fx-font-size: 75px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
-        HBox searchRow = new HBox(10, messageLabel, titleTextField);
+        //message label and text field for search
+        messageLabel = new Label("Enter a book title:");
+        messageLabel.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;-fx-text-fill: #333;");
+        titleTextField = new TextField();
+        titleTextField.setPromptText("Search Book");
+        titleTextField.setPrefSize(800, 25);
+        titleTextField.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+
+        searchButton = new Button("Search");
+        searchButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;-fx-background-color: #ADD8E6;");
+        searchButton.setPrefSize(200,35);
+        searchButton.setOnAction(e -> BookInfo(stage));
+
+        HBox searchRow = new HBox(10, messageLabel, titleTextField, searchButton);
         searchRow.setAlignment(javafx.geometry.Pos.CENTER);
 
         // book manager contains stored books
@@ -55,32 +62,56 @@ public class SearchUI extends Application {
 
         //list all books
         ListView<String> bookList = new ListView<>();
-        bookList.setPrefHeight(250);
+        bookList.setPrefSize(100,250);
+        bookList.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
 
         //show all book title
         List<Book> allBooks = manager.getAllBooks();
         for(Book book : allBooks) {
-            String displayText = book.getBookTitle() + " - " + (book.isEbook() ? "Ebook" : "Phyiscal Book");
-            bookList.getItems().add(displayText);
+            String booktitle = book.getBookTitle();
+            bookList.getItems().add(booktitle);
         }
+
+        //Top bar for sign out
+        HBox topBar = new HBox();
+        topBar.setAlignment(Pos.BASELINE_RIGHT);
+        topBar.setPrefSize(150,25);
+        topBar.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        //button for sign out
+        Button signOutButton = new Button("Sign Out");
+        signOutButton.setOnAction(e -> {
+            loginScene(stage);
+        });
+        topBar.getChildren().add(signOutButton);
+
+
+        //grouping all layout
+        layout.getChildren().addAll(titleLabel,searchRow, bookList);
+        root.setCenter(layout);
+        root.setTop(topBar);
 
 
         // window title
         stage.setTitle("Search Books");
-        layout.getChildren().addAll(titleLabel,searchRow, searchButton, bookList);
-        Scene scene = new Scene(layout, 500, 350);
+        Scene scene = new Scene(root, 500, 350);
         stage.setScene(scene);
-        // show stage
+
+        // show stage and full screen
         stage.setFullScreen(true);
         stage.show();
 
     }
 
     public void BookInfo(Stage stage) {
+        //store the state of fullscreen
+        boolean wasFullScreen = stage.isFullScreen();
+
         VBox layout = new VBox(10);
+
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> searchScene(stage));
         layout.getChildren().add(backButton);
+
         String title = titleTextField.getText();
         Book book = bookManager.searchBooks(title);
         if (book == null) {
@@ -88,6 +119,8 @@ public class SearchUI extends Application {
             layout.getChildren().add(notFound);
             Scene scene = new Scene(layout, 500, 350);
             stage.setScene(scene);
+            stage.setFullScreen(true
+            );
             return;
         } else {
             String bookType;
@@ -104,6 +137,7 @@ public class SearchUI extends Application {
             checkOutButton = new Button("Check Out");
             readButton.setOnAction(e -> openBook(title));
             checkOutButton.setOnAction(e -> checkOutBook(title));
+
             if (book.isEbook()) {
                 layout.getChildren().addAll(info, readButton);
             } else {
@@ -112,10 +146,11 @@ public class SearchUI extends Application {
 
             stage.setTitle(title);
             Scene scene = new Scene(layout, 500, 350);
+            stage.setFullScreen(true);
             stage.setScene(scene);
         }
         //fullscreen and show stage
-        //stage.setFullScreen(true);
+        stage.setFullScreen(true);
         stage.show();
     }
 
@@ -125,6 +160,7 @@ public class SearchUI extends Application {
         File file = new File("bookFiles/"+book.getBookFile());
         TextArea textArea = new TextArea();
         textArea.setEditable(false);
+
         try {
             String content = Files.readString(file.toPath());
             textArea.setText(content);
@@ -132,7 +168,23 @@ public class SearchUI extends Application {
             textArea.setText("Failed to read book file.");
         }
 
-        Scene scene = new Scene(textArea, 500, 350);
+        //creating a back button
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> {
+            ((Stage) backButton.getScene().getWindow()).close();
+        });
+
+        HBox topBar = new HBox(backButton);
+        topBar.setPadding(new Insets(10));
+        topBar.setAlignment(Pos.TOP_LEFT);
+
+        //borderPane layout
+        BorderPane layout = new BorderPane();
+        layout.setTop(topBar);
+        layout.setCenter(textArea);
+
+
+        Scene scene = new Scene(layout, 500, 350);
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(scene);
@@ -316,7 +368,7 @@ public class SearchUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         loginScene(stage);
-        registerScene(stage);
+        searchScene(stage);
     }
 
     public static void main(String[] args) {
