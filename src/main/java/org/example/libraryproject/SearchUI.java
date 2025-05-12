@@ -5,16 +5,18 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchUI extends Application {
@@ -164,6 +166,7 @@ public class SearchUI extends Application {
         Book book = bookManager.searchBooks(title);
         File file = new File("bookFiles/"+book.getBookFile());
         TextArea textArea = new TextArea();
+        textArea.setStyle("-fx-font-size: 30px");
         textArea.setEditable(false);
 
         try {
