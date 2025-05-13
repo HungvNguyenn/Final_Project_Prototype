@@ -6,10 +6,11 @@ ReadNest
 Joseph Scott and Hung Nguyen
 
 ## Project Description
-We have created a program for a simple Library Management System. Users can log in or register an account, then they enter the main menu where they type in the name of a book in the search, and if that book exists in our database the information of the book will be displayed (title, number of pages, description, whether it is an ebook or physical book).<br><br>
-If the book is an eBook, the user can click the "Read" button, which will pull up a text file that is meant to represent what would be the contents of the book for the user to read.<br><br>
-In place of entire books in the .txt files for users to read, we are using summaries of each book, or Wikipedia descriptions for some books from a series.<br><br>
-If the book is a physical book, there is a "Check Out" button that is meant to simulate the user checking out a book from a library before reading it. <br><br>
+We have created a program for a simple Library Management System. Users can log in or register an account, then they enter the main menu where the list of books to choose from is displayed and they can type in the name of a book in the search bar. If that book exists in our database, the information of the book will be displayed (title, number of pages, description, whether it is an ebook or physical book).<br><br>
+If the book is an eBook, the user can click the "Read" button, which will pull up a text file that contains the book contents.<br><br>
+In place of entire books in the .txt files for users to read, we are using either summaries of each book, or Wikipedia descriptions for some of the books that are from a series.<br><br>
+If the book is a physical book, there is a "Check Out" button that is meant to simulate the user checking out a book from a library before reading it. 
+After clicking check out, the user can either click the "Return" button to return the book and go back to the book info scene, or they can click the "Read" button, which will then display the book contents. <br><br>
 ### Note:
 The database is currently being hosted locally, so in order to run the program, the database has to be imported using the file called "library_dump.sql"
 
