@@ -66,8 +66,8 @@ public class BookDAO {
         String sql = "SELECT * FROM book";
 
         try (Connection conn = DBUtil.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(sql)) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 books.add(new Book(

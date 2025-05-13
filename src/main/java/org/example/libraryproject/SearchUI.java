@@ -166,6 +166,7 @@ public class SearchUI extends Application {
         Book book = bookManager.searchBooks(title);
         File file = new File("bookFiles/"+book.getBookFile());
         TextArea textArea = new TextArea();
+        textArea.setWrapText(true);
         textArea.setStyle("-fx-font-size: 30px");
         textArea.setEditable(false);
 
@@ -217,9 +218,8 @@ public class SearchUI extends Application {
         returnBook.setPrefSize(200,50);
         returnBook.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
         returnBook.setOnAction(e -> {
-           BookInfo(stage);
+            BookInfo(stage);
         });
-
 
         //read button book
         readButton = new Button("Read");
@@ -230,11 +230,8 @@ public class SearchUI extends Application {
         HBox buttonRow = new HBox(10);
         buttonRow.getChildren().addAll(returnBook, readButton);
         buttonRow.setAlignment(Pos.CENTER);
-
+        // add all components to layout
         layout.getChildren().addAll(checkedOut, buttonRow);
-
-
-
         Scene scene = new Scene(layout, 500, 350);
         stage.setTitle(title);
         stage.setScene(scene);
@@ -242,68 +239,87 @@ public class SearchUI extends Application {
         stage.show();
     }
 
+    // login scene
     public void loginScene(Stage stage) {
+        // use border pane for positioning
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #FAF9F6;");
+        root.setPadding(new Insets(20));
+
+        // exit button
+        HBox exitRow = new HBox();
+        exitRow.setAlignment(Pos.TOP_RIGHT);
+        Button exitButton = new Button("Exit");
+        exitButton.setPrefSize(100, 50);
+        exitButton.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-background-color: #FF0033");
+        exitButton.setOnAction(e -> System.exit(0)); // terminate program when clicked
+        exitRow.getChildren().add(exitButton);
+        root.setTop(exitRow);
+
+        // main layout for login screen
         VBox layout = new VBox(15);
         layout.setPadding(new Insets(50));
-        layout.setStyle("-fx-background-color: #FAF9F6;");
         layout.setAlignment(Pos.CENTER);
-
+        // title row
         Label loginTitle = new Label("\uD83D\uDCDA ReadNest \uD83C\uDFE1");
         loginTitle.setStyle("-fx-font-size: 100px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
-        //username
+        // Username row
         Label usernameLabel = new Label("Username: ");
         usernameLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;-fx-text-fill: #333;");
         TextField usernameTextField = new TextField();
         usernameTextField.setPromptText("Enter Username");
         usernameTextField.setPrefSize(700, 50);
         usernameTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
-        HBox usernameRow = new HBox(10,usernameLabel,usernameTextField);
+        HBox usernameRow = new HBox(10, usernameLabel, usernameTextField);
         usernameRow.setAlignment(Pos.CENTER);
 
-        //password
+        // Password row
         Label passwordLabel = new Label("Password: ");
         passwordLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;-fx-text-fill: #333");
         PasswordField passwordTextField = new PasswordField();
         passwordTextField.setPromptText("Enter Password");
         passwordTextField.setPrefSize(700, 50);
         passwordTextField.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
-        HBox passwordRow = new HBox(10,passwordLabel,passwordTextField);
+        HBox passwordRow = new HBox(10, passwordLabel, passwordTextField);
         passwordRow.setAlignment(Pos.CENTER);
-
-
+        // error label for invalid username or password
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-font-size: 25px;-fx-background-color: #FF0033; -fx-font-weight: bold;");
-
-        //login button
+        // login button
         Button loginButton = new Button("Login");
-        loginButton.setPrefSize(200,50);
+        loginButton.setPrefSize(200, 50);
         loginButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-background-color: #ADD8E6");
-        loginButton.setOnAction(e ->{
+        // open search scene when clicked
+        loginButton.setOnAction(e -> {
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
-            if (username.equals("admin") && password.equals("password")) {
+            // validate username and password
+            UserDAO userDAO = new UserDAO();
+            boolean valid = userDAO.validateUser(username, password);
+            if (valid) {
                 searchScene(stage);
             } else {
-                errorLabel.setText("Invalid Username or Password.");
+                errorLabel.setText("Invalid Username or Password."); // display error message
             }
         });
-
-        //register button
+        // register button
         Button registerButton = new Button("Register");
+        // open register scene when clicked
         registerButton.setOnAction(e -> registerScene(stage));
         registerButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
-        registerButton.setPrefSize(200,50);
-
-        HBox buttonRow = new HBox(10,registerButton,loginButton);
+        registerButton.setPrefSize(200, 50);
+        // set position of buttons
+        HBox buttonRow = new HBox(10, registerButton, loginButton);
         buttonRow.setAlignment(Pos.CENTER);
+        // add all components to layout
+        layout.getChildren().addAll(loginTitle, usernameRow, passwordRow, buttonRow, errorLabel);
+        // center layout in border pane
+        root.setCenter(layout);
 
-
-        layout.getChildren().addAll(loginTitle,usernameRow, passwordRow, buttonRow, errorLabel);
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Library Login");
-
         stage.setFullScreen(true);
         stage.show();
     }
@@ -368,13 +384,70 @@ public class SearchUI extends Application {
         confirmPassRow.setAlignment(Pos.CENTER);
 
         //register button
-        Label messageLabel = new Label();
+        // success label for successful registration
+        Label successLabel = new Label("Registration Successful.");
+        successLabel.setStyle("-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #333; -fx-background-color: #ADD8E6;");
+        // error label for invalid username or password
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-font-size: 25px;-fx-background-color: #FF0033; -fx-font-weight: bold;");
         Button registerButton = new Button("Register");
         registerButton.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-background-color: #ADD8E6");
         registerButton.setPrefSize(200,50);
         registerButton.setOnAction(e -> {
-            messageLabel.setText("Registration currently unavailable.");
-            messageLabel.setStyle("-fx-font-size: 25px;-fx-background-color: #FF0033; -fx-font-weight: bold;");
+            String username = usernameTextField.getText().trim();
+            String password = passwordTextField.getText();
+            String confirmPassword = confirmPassTextField.getText();
+
+            // remove old messages
+            layout.getChildren().remove(successLabel);
+            layout.getChildren().remove(errorLabel);
+
+            // check for empty fields
+            if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                errorLabel.setText("All fields must be filled.");
+                if (!layout.getChildren().contains(errorLabel)) {
+                    layout.getChildren().add(errorLabel);
+                }
+                return;
+            }
+
+            // check if passwords match
+            if (!password.equals(confirmPassword)) {
+                errorLabel.setText("Passwords do not match.");
+                if (!layout.getChildren().contains(errorLabel)) {
+                    layout.getChildren().add(errorLabel);
+                }
+                return;
+            }
+
+            // try to register user
+            User newUser = new User(username, password);
+            UserDAO userDAO = new UserDAO();
+            try {
+                boolean success = userDAO.registerUser(newUser);
+                if (success) {
+                    layout.getChildren().remove(errorLabel);
+                    successLabel.setText("Registration Successful.");
+                    if (!layout.getChildren().contains(successLabel)) {
+                        layout.getChildren().add(successLabel);
+                    }
+                    // clear fields:
+                    usernameTextField.clear();
+                    passwordTextField.clear();
+                    confirmPassTextField.clear();
+                } else {
+                    errorLabel.setText("Username already exists.");
+                    if (!layout.getChildren().contains(errorLabel)) {
+                        layout.getChildren().add(errorLabel);
+                    }
+                }
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+                errorLabel.setText("Internal error occurred.");
+                if (!layout.getChildren().contains(errorLabel)) {
+                    layout.getChildren().add(errorLabel);
+                }
+            }
         });
 
         //back to login page button
@@ -386,7 +459,7 @@ public class SearchUI extends Application {
         HBox buttonRow = new HBox(10,backButton,registerButton);
         buttonRow.setAlignment(Pos.CENTER);
 
-        layout.getChildren().addAll(registerTitle, userNameRow, passwordRow, confirmPassRow, buttonRow, messageLabel);
+        layout.getChildren().addAll(registerTitle, userNameRow, passwordRow, confirmPassRow, buttonRow);
         Scene scene = new Scene(layout);
         stage.setScene(scene);
         stage.setTitle("Register New Account");

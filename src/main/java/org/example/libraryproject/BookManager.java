@@ -38,7 +38,12 @@ public class BookManager {
         System.out.print("Enter book file name: ");
         String bookFileName = scanner.nextLine();
 
-        Book book = new Book(title, pages, description, isEbook, bookFileName);
+        Book book;
+        if (isEbook) {
+            book = new eBook(title, pages, description, isEbook, bookFileName);
+        } else {
+            book = new PhysicalBook(title, pages, description, isEbook, bookFileName);
+        }
         try {
             manager.addBook(book);
             createFile(bookFileName, scanner);

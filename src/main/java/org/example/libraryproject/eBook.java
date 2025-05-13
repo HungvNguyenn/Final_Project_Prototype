@@ -7,5 +7,7 @@ public class eBook extends Book{
         super(bookTitle);
     }
 
-    private HashMap<String, Book> ebooks;
+    public eBook(String title, int pages, String description, boolean isEbook,String bookFileName) {
+        super(title, pages, description, isEbook, bookFileName);
+    }
 }
