@@ -25,31 +25,36 @@ The database is currently being hosted locally, so in order to run the program, 
 ![image](https://github.com/user-attachments/assets/4f2adc6b-6397-463d-a117-b2571775e527)
 
 ## How to Run
-1. This project utilizes JavaFX for the front-end. When opening the project folder, this may require a user to set up JavaFX on their end as well as MySQL database.
+1. This project utilizes JavaFX for the front-end. When opening the project folder, this may require a user to set up JavaFX on their end as well as the MySQL database.
 2. After JavaFX and MySQL are properly set up, the user must run the file Main.java in order to run the program.
-3. When Main.java runs, a JavaFX window will pop up asking the user to log in or register an account
-4. When clicking on the registration button it will pop up a new scene for the user to enter their username and password and then register (currently unavailable) using the register button or back to go back to log in menu
-5. The user can log in by entering their username and password and then clicking the login button (there is currently only the admin login **username:** admin and **password:** password)
-4. Currently, there are not many books in our database so the user has to know already what books exist before searching for a book. The user must also type in the name of the book exactly, or the program will say "Book not found".
-5. After searching for an existing book, the user will see a new window displaying a "Back" button, the books information, and either a "Read" button or a "Check Out" button.
+3. When Main.java runs, a JavaFX window will pop up asking the user to log in, register an account, or exit.
+4. When clicking on the registration button it will pop up a new scene for the user to enter a username and password and then register an account using the "Register" button or back to go back to login menu.
+5. The user can log in by entering their registered username and password and then clicking the "Login" button. 
+4. After logging in, the use will see a list of books present in the database. The user can search for a book by typing in a book name and then clicking the "Search" button. The user must also type in the name of one of these books book exactly as shown, or the program will say "Book not found".
+5. After searching for an existing book, the user will see a new window displaying a "Back" button, the books information, and either a "Read" button or a "Check Out" button depending on whether the book is an Ebook or Physical Book.
 6. Pressing the back button reopens the window with the search bar.
 7. If the book is listed as an eBook, the button will say "Read". If the book is listed as a physical book, the button will say "Check Out".
-8. When the "Check Out" button is clicked, a window with a message saying "Book checked out" will be displayed along with a "Read" button. This is meant to simulate checking out a physical book library book before reading it, since we cannot implement real physical books into the program.
-9. When the user clicks the "Read" button, a new window will appear, containing the contents of the book file. We do not have any full books in the files, so we use single sentence placeholders to show that the "Read" button works and displays the contents of a .txt file.
-10. When the user is done reading the book, they can click on the "X" in the top right corner to close the window and return to the window with the book's information
-11. From there, the user can click the "Read" button to reopen the .txt file, or they can press the "Back" button to return to the search bar.
-12. If the user clicks on the "Exit" button in the top right corner to close the window, the program will terminate.
+8. When the "Check Out" button is clicked, a window with a message saying "Book checked out" will be displayed along with a "Return" and "Read" button. This is meant to simulate checking out a physical book library book before reading it, since we cannot implement real physical books into the program.
+9. Clicking the "Return" button will take the user back to the scene displaying the book information, simulating returning a physical book after checking it out and reading it.
+10. When the user clicks the "Read" button, a new window will appear, containing the contents of the book file. We do not have any full books in the files, so we use single sentence placeholders to show that the "Read" button works and displays the contents of a .txt file.
+11. When the user is done reading the book, they can click on the "Back" button in the top left corner to return to the scene with the book's information.
+13. From there, the user can click the "Read" button to reopen the .txt file if the books is an Ebook, they can click the "Check Out" button to check the book out again if it is a Physical Book, or they can press the "Back" button to return to the search bar.
+14. If the user clicks on the "Signout" button in the top right corner, the user will be signed out and will return to the Login scene.
+15. The user can then click the "Exit" button in the top right corner to terminate the program.
 
 
 ## Features Implemented
 * JavaFX frontend
 * Registering an account
-* Login function that take in username and password
+* Not letting user register an account if the account already exists
+* Login function that takes in username and password
 * Functioning search bar with a button
 * Button to open a .txt file
 * Button to simulate checking out a book before reading
+* Button to simulate returning a book after checking it out
 * Back button to return to previous page
 * Sign out button to go back to login page
+* Exit button to terminate program
 * Working database that can be updated from the program (BookManager.java)
 
 ## Future Work
