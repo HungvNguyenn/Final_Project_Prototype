@@ -8,20 +8,26 @@ public class UserDAO {
     public boolean registerUser(User user) throws ClassNotFoundException {
         String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
         Class.forName("com.mysql.cj.jdbc.Driver");
-
         try (Connection conn = DBUtil.getConnection()) {
             // ensure auto-commit
             conn.setAutoCommit(true);
-
-            // create table  if it doesn't exist
+            // create table if it doesn't exist
             ensureTableExists(conn);
-
             // insert user
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setString(1, user.getUsername());
-                stmt.setString(2, user.getPassword()); // not encrypted in database
-                stmt.executeUpdate();
-                return true;
+
+                String username = user.getUsername();
+                String password = user.getPassword();
+                // check if username exists before registering
+                if (validateUser(username, password)) {
+                    System.out.println("Username already exists.");
+                    return false;
+                } else {
+                    stmt.setString(1, username);
+                    stmt.setString(2, password); // not encrypted in database
+                    stmt.executeUpdate();
+                    return true;
+                }
             } catch (SQLException e) {
                 // check if it's a duplicate key violation
                 if (e.getSQLState().startsWith("23")) { // integrity constraint violation
@@ -31,7 +37,6 @@ public class UserDAO {
                 }
                 return false;
             }
-
         } catch (SQLException e) {
             e.printStackTrace(); // catching error from getConnection or ensureTableExists
             System.out.println("Insert failed: " + e.getMessage());
@@ -67,3 +72,4 @@ public class UserDAO {
         }
     }
 }
+
