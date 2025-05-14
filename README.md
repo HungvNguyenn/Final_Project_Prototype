@@ -73,17 +73,17 @@ The database is currently being hosted locally, so in order to run the program, 
 
 ## Screenshots
 Login Window: <br><br>
-![Loghin Window](https://github.com/user-attachments/assets/676669f7-35ee-4792-86c8-dde831be4b74) <br><br>
+![Login Window](https://github.com/user-attachments/assets/9a81588a-f71a-414d-97a2-d62d91470180) <br><br>
 Register Window: <br><br>
-![Register Window](https://github.com/user-attachments/assets/4764b0b6-c080-4c8f-9421-71e110ccf729) <br><br>
+![Register Window](https://github.com/user-attachments/assets/33a51ed7-b438-43da-807e-42ede882e17c) <br><br>
 Search Bar: <br><br>
-![Search Bar](https://github.com/user-attachments/assets/1b1bd272-dc8a-449b-8f3f-799f49d914cc)<br><br>
+![Book Info](https://github.com/user-attachments/assets/ef88fb85-f845-44a3-981c-d430b30d49eb)<br><br>
 Book Info: <br><br>
-![Book Info](https://github.com/user-attachments/assets/1775f544-ab67-4f82-962a-ea7becd2f228)<br><br>
+![Book Info](https://github.com/user-attachments/assets/c5663b03-46ac-4fd1-a623-7e3d71826292)<br><br>
 Book Content: <br><br>
-![Book Content](https://github.com/user-attachments/assets/f138eac0-6398-4498-8147-634509a7f443)<br><br>
+![Book Contents](https://github.com/user-attachments/assets/88d48ab8-df8e-444f-bba9-33fd1086fdf8)<br><br>
 Checked Out: <br><br>
-![Checked Out](https://github.com/user-attachments/assets/23e58d99-37ae-4086-9453-7557557b7227)<br><br>
+![Checked Out](https://github.com/user-attachments/assets/5d6c4b0f-1078-48b9-a92a-f9527611e088)<br><br>
 
 ## Video Link
 [ReadNest Demo](https://drive.google.com/file/d/1xk6BrmW9gPzdWaKs8z9s6xHsbY7auOoa/view?usp=sharing)
